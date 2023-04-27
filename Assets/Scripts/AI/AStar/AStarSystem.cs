@@ -8,12 +8,16 @@ using UnityEngine.Tilemaps;
 [RequireComponent(typeof(NodeGenerator))]
 public class AStarSystem : MonoBehaviour
 {
-	NodeDataObject dataObject = null;
-
 	static UnityAction<AStarSystem> systemInitCallback = null;
 	static AStarSystem instance = null;
 
+	NodeDataObject dataObject = null;
+
+	[SerializeField]
+	GameObject player = null;
+
 	public NodeDataObject DataObject { get => dataObject; set => dataObject = value; }
+	public GameObject Player { get => player; set => player = value; }
 
 	public static void AddInitSystemCallback(UnityAction<AStarSystem> callback)
 	{

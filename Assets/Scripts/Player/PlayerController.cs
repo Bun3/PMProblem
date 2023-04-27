@@ -11,12 +11,7 @@ public interface IObjectInterface
 
 };
 
-public interface IObjectTurn : IObjectInterface
-{
-	void TurnLeft();
-	void TurnRight();
-}
-
+[RequireComponent(typeof(Player))]
 public class PlayerController : MonoBehaviour, PlayerControls.IPlayerActions
 {
 	PlayerControls playerControls;
@@ -25,8 +20,9 @@ public class PlayerController : MonoBehaviour, PlayerControls.IPlayerActions
 
 	IObjectInterface[] objectInterfaces = null;
 
-	SpriteRenderer spriteRenderer;
 	Rigidbody2D rigidBody;
+
+	Player player = null;
 
 	[SerializeField]
 	float playerMoveSpeed = 0.5f;
@@ -39,8 +35,8 @@ public class PlayerController : MonoBehaviour, PlayerControls.IPlayerActions
 	void Awake()
 	{
 		objectInterfaces = GetComponents<IObjectInterface>();
-		spriteRenderer = GetComponent<SpriteRenderer>();
 		rigidBody = GetComponent<Rigidbody2D>();
+		player = GetComponent<Player>();
 	}
 
 	void OnEnable()
@@ -84,19 +80,11 @@ public class PlayerController : MonoBehaviour, PlayerControls.IPlayerActions
 		{
 			if (moveDirection.x < 0.0f && prevMoveDir.x >= 0.0f)
 			{
-				spriteRenderer.flipX = false;
-				foreach (var turnInterface in GetObjectInterfaces<IObjectTurn>())
-				{
-					turnInterface.TurnLeft();
-				}
+				player.TurnLeft();
 			}
 			else if (moveDirection.x > 0.0f && prevMoveDir.x <= 0.0f)
 			{
-				spriteRenderer.flipX = true;
-				foreach (var turnInterface in GetObjectInterfaces<IObjectTurn>())
-				{
-					turnInterface.TurnRight();
-				}
+				player.TurnRight();
 			}
 		}
 
