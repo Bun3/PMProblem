@@ -6,37 +6,27 @@ using PMProblem;
 using System;
 using System.Linq;
 
-public interface IObjectInterface
+public enum MoveDirection
 {
-
+	None, Left, Right, Up, Down
 };
 
+[RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Player))]
 public class PlayerController : MonoBehaviour, PlayerControls.IPlayerActions
 {
-	PlayerControls playerControls;
-	Vector2 moveDirection = Vector2.zero;
-	Vector2 prevMoveDir = Vector2.zero;
-
-	IObjectInterface[] objectInterfaces = null;
-
-	Rigidbody2D rigidBody;
+	PlayerControls playerControls = null;
 
 	Player player = null;
+	Rigidbody2D playerRigidbody = null;
 
 	[SerializeField]
 	float playerMoveSpeed = 0.5f;
 
-	public void OnMove(InputAction.CallbackContext context)
-	{
-		moveDirection = context.ReadValue<Vector2>();
-	}
-
 	void Awake()
 	{
-		objectInterfaces = GetComponents<IObjectInterface>();
-		rigidBody = GetComponent<Rigidbody2D>();
 		player = GetComponent<Player>();
+		playerRigidbody = GetComponent<Rigidbody2D>();
 	}
 
 	void OnEnable()
@@ -49,50 +39,28 @@ public class PlayerController : MonoBehaviour, PlayerControls.IPlayerActions
 		playerControls.Player.Enable();
 	}
 
-	T[] GetObjectInterfaces<T>()
-	{
-		List<T> result = new List<T>();
-        foreach (var item in objectInterfaces)
-        {
-			if (item is T objectInterface)
-			{
-				result.Add(objectInterface);
-			}
-		}
-		return result.ToArray();
-    }
-
 	void OnDisable()
 	{
 		playerControls.Player.Disable();
 	}
 
-	// Start is called before the first frame update
-	void Start()
+	private void FixedUpdate()
 	{
-
+		var movement = playerControls.Player.Move.ReadValue<Vector2>();
+		movement.Normalize();
+		playerRigidbody.velocity = movement * playerMoveSpeed;
 	}
 
-	// Update is called once per frame
-	void Update()
+	public void OnMove(InputAction.CallbackContext context)
 	{
-		if (moveDirection.x != 0.0f)
+		var inputDir = context.ReadValue<Vector2>();
+		if (inputDir.x < 0) 
 		{
-			if (moveDirection.x < 0.0f && prevMoveDir.x >= 0.0f)
-			{
-				player.TurnLeft();
-			}
-			else if (moveDirection.x > 0.0f && prevMoveDir.x <= 0.0f)
-			{
-				player.TurnRight();
-			}
+			player.TurnLeft();
 		}
-
-		prevMoveDir = moveDirection;
-	}
-
-	void FixedUpdate()
-	{
-		rigidBody.velocity = moveDirection * playerMoveSpeed;
+		else if(inputDir.x > 0)
+		{
+			player.TurnRight();
+		}
 	}
 }

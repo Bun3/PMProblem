@@ -5,24 +5,38 @@ using UnityEngine;
 [RequireComponent(typeof(Collider2D))]
 public class Oni : Character
 {
-	new Collider2D collider2D = null;
+	protected BaseObject target = null;
 
-	const string c_playerTag = "Player";
+	public BaseObject Target {  get { return target; } }
+
+	[SerializeField]
+	protected float speed = 1.0f;
 
 	protected override void Awake()
 	{
 		base.Awake();
 
-		collider2D = GetComponent<Collider2D>();
 		collider2D.isTrigger = true;
 	}
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		if(collision.CompareTag(c_playerTag))
+		if(target is Player && target.gameObject == collision.gameObject)
 		{
-			Debug.Log("¿‚æ“¥Á");
+			GameManager.Instance.OnGameOver();
 		}
 	}
 
+	public bool IsChasingTarget()
+	{
+		return target != null;
+	}
+
+	public void SetTarget(BaseObject target)
+	{
+		if (target == null)
+			return;
+
+		this.target = target;
+	}
 }

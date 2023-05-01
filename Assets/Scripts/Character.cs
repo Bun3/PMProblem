@@ -2,25 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Character : MonoBehaviour
+public abstract class Character : BaseObject
 {
-	SpriteRenderer spriteRenderer;
+	protected SpriteRenderer spriteRenderer;
+	protected new Collider2D collider2D = null;
 
-	protected virtual void Awake()
+	protected override void Awake()
 	{
+		base.Awake();
+
 		spriteRenderer = GetComponent<SpriteRenderer>();
+		collider2D = GetComponent<Collider2D>();
 	}
 
-	// Start is called before the first frame update
-	void Start()
+	private void LateUpdate()
 	{
-
-	}
-
-	// Update is called once per frame
-	void Update()
-	{
-
 	}
 
 	public void TurnLeft()
@@ -37,6 +33,12 @@ public class Character : MonoBehaviour
 			return;
 
 		spriteRenderer.flipX = true;
+	}
+
+	public void OnSpawn(Map spawnedMap)
+	{
+		currentMap = spawnedMap;
+		GameManager.Instance.ExecuteGameEvent<IOnSpawnCharacterHandler>(null, (x, y) => x.OnSpawn(this));
 	}
 
 }
