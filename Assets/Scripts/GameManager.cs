@@ -20,9 +20,7 @@ public class GameManager : MonoBehaviour
 				var obj = new GameObject("GameManager");
 				instance = obj.AddComponent<GameManager>();
 
-				Assert.IsNotNull(instance.spawnData);
-
-				instance.spawnData.InitSpawnableMap();
+				instance.InitManager();
 			}
 			return instance;
 		} 
@@ -38,6 +36,14 @@ public class GameManager : MonoBehaviour
 	HashSet<GameObject> spawnedObjects = new HashSet<GameObject>();
 
 	GameObject canvas = null;
+
+	void InitManager()
+	{
+		Assert.IsNotNull(spawnData);
+
+		spawnData.InitSpawnableMap();
+		Application.targetFrameRate = 60;
+	}
 
 	void ResetData()
 	{

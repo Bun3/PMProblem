@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -7,9 +8,10 @@ using UnityEngine;
 public class Aooni : Oni, IOnMoveMapHandler
 {
 	AStarNode startNode, targetNode, curNode;
-	List<AStarNode> openList, closeList;
-
+	List<AStarNode> openList;
+	HashSet<AStarNode> closeList;
 	Stack<AStarNode> finalPaths;
+
 	AStarNode pathNode;
 
 	NodeDataObject Data { get => currentMap.NodeDataObject; }
@@ -19,12 +21,15 @@ public class Aooni : Oni, IOnMoveMapHandler
 	static float waitSec = 0.5f;
 	static object waitSecond = new WaitForSeconds(waitSec);
 
+	Animator animator = null;
+
 	protected override void Awake()
 	{
 		base.Awake();
 		openList = new List<AStarNode>();
-		closeList = new List<AStarNode>();
+		closeList = new HashSet<AStarNode>();
 		finalPaths = new Stack<AStarNode>();
+		animator = GetComponent<Animator>();
 	}
 
 	Coroutine chaseTargetCoroutine = null;
@@ -72,15 +77,31 @@ public class Aooni : Oni, IOnMoveMapHandler
 
 	private void FixedUpdate()
 	{
+		AStarNode tempPathNode = pathNode;
 		if (pathNode == null || pathNode.Position == transform.position)
 		{
 			pathNode = null;
 			finalPaths.TryPop(out pathNode);
 		}
 
+		if(pathNode != tempPathNode)
+		{
+			animator.SetBool("Walking", pathNode != null);
+		}
+
+		var prevPosition = transform.position;
 		if (pathNode != null)
 		{
 			transform.position = Vector2.MoveTowards(transform.position, pathNode.Position, Time.fixedDeltaTime * speed);
+		}
+
+		Vector2 dir = transform.position - prevPosition;
+		dir.Normalize();
+
+		if(dir != Vector2.zero)
+		{
+			animator.SetFloat("DirX", dir.x);
+			animator.SetFloat("DirY", dir.y);
 		}
 	}
 
@@ -160,8 +181,12 @@ public class Aooni : Oni, IOnMoveMapHandler
 		var node = Data.GetNodeByIndex(index);
 		if (node == null)
 			return;
-		if (closeList.Find((astarNode) => { return node == astarNode; }) != null)
+		Stopwatch watch = new Stopwatch();
+		watch.Start();
+		if (closeList.Contains(node))
 			return;
+		watch.Stop();
+		UnityEngine.Debug.LogFormat("{0}", watch.ElapsedMilliseconds);
 
 		int cost = curNode.G + (curNode.X - index.x == 0 || curNode.Y - index.y == 0 ? 10 : 14);
 

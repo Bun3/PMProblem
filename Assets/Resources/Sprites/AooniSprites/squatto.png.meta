@@ -42,12 +42,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 32
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -127,7 +127,679 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: squatto_0
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 479
+        width: 95
+        height: 156
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c7b29aa441d9b75479363d27e12e14ba
+      internalID: -1084420675
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: squatto_1
+      rect:
+        serializedVersion: 2
+        x: 97
+        y: 480
+        width: 95
+        height: 154
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1133614e21147174ca33930bda5ae4f5
+      internalID: -840783794
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: squatto_2
+      rect:
+        serializedVersion: 2
+        x: 193
+        y: 480
+        width: 95
+        height: 156
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dd160962910a35642b8b4982ad55f7a3
+      internalID: 1109928112
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: squatto_3
+      rect:
+        serializedVersion: 2
+        x: 289
+        y: 480
+        width: 95
+        height: 154
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1e35821afcf0f764a98acb77c1bc3415
+      internalID: 1399804604
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: squatto_4
+      rect:
+        serializedVersion: 2
+        x: 397
+        y: 480
+        width: 119
+        height: 156
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eb110228caa62c64282df3fa8384d9d5
+      internalID: 1602909752
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: squatto_5
+      rect:
+        serializedVersion: 2
+        x: 526
+        y: 480
+        width: 119
+        height: 160
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3286606c1560dcd44bfcdd851dc51547
+      internalID: -289364877
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: squatto_6
+      rect:
+        serializedVersion: 2
+        x: 656
+        y: 480
+        width: 115
+        height: 137
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3af10d17a97eb7241ab2e235e2d0271d
+      internalID: 23416726
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: squatto_7
+      rect:
+        serializedVersion: 2
+        x: 789
+        y: 480
+        width: 103
+        height: 133
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 56bebbada97dea24382dbc9b4c45eb41
+      internalID: 1990656776
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: squatto_8
+      rect:
+        serializedVersion: 2
+        x: 20
+        y: 320
+        width: 60
+        height: 156
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c1c2e45152727d942820ce3277601168
+      internalID: -200821572
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: squatto_9
+      rect:
+        serializedVersion: 2
+        x: 116
+        y: 320
+        width: 61
+        height: 155
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 217d5df107a4d224989900edbb6db28b
+      internalID: 1310724772
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: squatto_10
+      rect:
+        serializedVersion: 2
+        x: 212
+        y: 320
+        width: 60
+        height: 156
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2ba053953b4ee864aaae237745e951b3
+      internalID: 532941527
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: squatto_11
+      rect:
+        serializedVersion: 2
+        x: 308
+        y: 321
+        width: 56
+        height: 155
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 990cbf248aba69f4d84565bd53d58987
+      internalID: 226493953
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: squatto_12
+      rect:
+        serializedVersion: 2
+        x: 405
+        y: 320
+        width: 103
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0e872102e82b0224a92902b7560381bd
+      internalID: 917906809
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: squatto_13
+      rect:
+        serializedVersion: 2
+        x: 533
+        y: 320
+        width: 104
+        height: 126
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f3a1f96873b722f44bf6d2b546eb09a5
+      internalID: 786358628
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: squatto_14
+      rect:
+        serializedVersion: 2
+        x: 661
+        y: 322
+        width: 105
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5a982f758bed3de4387748d48da7f37d
+      internalID: 2110952470
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: squatto_16
+      rect:
+        serializedVersion: 2
+        x: 789
+        y: 320
+        width: 103
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: df136d83041f6474a827df236e1e85ed
+      internalID: -1549634715
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: squatto_17
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 160
+        width: 60
+        height: 156
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2fc1ed12e7280154693a6add2a6848b5
+      internalID: -815246040
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: squatto_18
+      rect:
+        serializedVersion: 2
+        x: 111
+        y: 160
+        width: 61
+        height: 155
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 63389a296b1ed8d4988c4b5dd915124c
+      internalID: 1732670064
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: squatto_19
+      rect:
+        serializedVersion: 2
+        x: 208
+        y: 160
+        width: 60
+        height: 156
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 91e0f8fcc4bf6c2469428dfc7cae2815
+      internalID: 1946461632
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: squatto_20
+      rect:
+        serializedVersion: 2
+        x: 308
+        y: 160
+        width: 56
+        height: 155
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 32372f0c678a27743947418fa5e37f6a
+      internalID: 49913036
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: squatto_21
+      rect:
+        serializedVersion: 2
+        x: 405
+        y: 160
+        width: 103
+        height: 156
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bbc690b3de6de5c449eadc113875ad80
+      internalID: -1919622939
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: squatto_22
+      rect:
+        serializedVersion: 2
+        x: 539
+        y: 160
+        width: 95
+        height: 156
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0453aa1fc3a67b2469737a153738378a
+      internalID: -759976863
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: squatto_23
+      rect:
+        serializedVersion: 2
+        x: 667
+        y: 160
+        width: 95
+        height: 156
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4c91f34a2f505494a9c75e1e621455bf
+      internalID: 721419234
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: squatto_24
+      rect:
+        serializedVersion: 2
+        x: 795
+        y: 160
+        width: 95
+        height: 156
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 85162f0aef618a5498c2450283df8d14
+      internalID: 1323883811
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: squatto_25
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 95
+        height: 156
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3fd443c6d969db846bd73eebb8246e7d
+      internalID: -965512849
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: squatto_26
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 0
+        width: 95
+        height: 154
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 863ecbe46e463c0428a2392d9526efcc
+      internalID: 117508893
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: squatto_27
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 0
+        width: 95
+        height: 156
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6900348e79feb8546816dd60967364d8
+      internalID: 1571950654
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: squatto_28
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 0
+        width: 95
+        height: 154
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bce64eedefa51e04785c05e7517d6ba8
+      internalID: 1125741095
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: squatto_29
+      rect:
+        serializedVersion: 2
+        x: 405
+        y: 0
+        width: 103
+        height: 156
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 83ce009730b070a4dbd3c758d48ffc4b
+      internalID: -892916233
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: squatto_30
+      rect:
+        serializedVersion: 2
+        x: 539
+        y: 0
+        width: 95
+        height: 156
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3cb3eace6265fd04faefd99badbe57b0
+      internalID: -302892256
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: squatto_31
+      rect:
+        serializedVersion: 2
+        x: 667
+        y: 0
+        width: 95
+        height: 156
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3443501aaf692eb468aa6f4693df34c1
+      internalID: -517276982
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: squatto_32
+      rect:
+        serializedVersion: 2
+        x: 795
+        y: 0
+        width: 95
+        height: 156
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5d2512bd7c1a82441887fde04fb82c1d
+      internalID: -640059673
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -138,7 +810,40 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      squatto_0: -1084420675
+      squatto_1: -840783794
+      squatto_10: 532941527
+      squatto_11: 226493953
+      squatto_12: 917906809
+      squatto_13: 786358628
+      squatto_14: 2110952470
+      squatto_15: -593916533
+      squatto_16: -1549634715
+      squatto_17: -815246040
+      squatto_18: 1732670064
+      squatto_19: 1946461632
+      squatto_2: 1109928112
+      squatto_20: 49913036
+      squatto_21: -1919622939
+      squatto_22: -759976863
+      squatto_23: 721419234
+      squatto_24: 1323883811
+      squatto_25: -965512849
+      squatto_26: 117508893
+      squatto_27: 1571950654
+      squatto_28: 1125741095
+      squatto_29: -892916233
+      squatto_3: 1399804604
+      squatto_30: -302892256
+      squatto_31: -517276982
+      squatto_32: -640059673
+      squatto_4: 1602909752
+      squatto_5: -289364877
+      squatto_6: 23416726
+      squatto_7: 1990656776
+      squatto_8: -200821572
+      squatto_9: 1310724772
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
