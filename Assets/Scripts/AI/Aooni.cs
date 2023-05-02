@@ -4,15 +4,14 @@ using System.Diagnostics;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using Priority_Queue;
 
 public class Aooni : Oni, IOnMoveMapHandler
 {
-	AStarNode startNode, targetNode, curNode;
-	List<AStarNode> openList;
-	HashSet<AStarNode> closeList;
-	Stack<AStarNode> finalPaths;
-
-	AStarNode pathNode;
+	AStarNode targetNode, curNode;
+	FastPriorityQueue<AStarNode> openNodes;
+	HashSet<AStarNode> closeNodes;
+	Stack<AStarNode> finalNodes;
 
 	NodeDataObject Data { get => currentMap.NodeDataObject; }
 
@@ -26,9 +25,9 @@ public class Aooni : Oni, IOnMoveMapHandler
 	protected override void Awake()
 	{
 		base.Awake();
-		openList = new List<AStarNode>();
-		closeList = new HashSet<AStarNode>();
-		finalPaths = new Stack<AStarNode>();
+		openNodes = new FastPriorityQueue<AStarNode>(5000);
+		closeNodes = new HashSet<AStarNode>();
+		finalNodes = new Stack<AStarNode>();
 		animator = GetComponent<Animator>();
 	}
 
@@ -37,9 +36,10 @@ public class Aooni : Oni, IOnMoveMapHandler
 	{
 		while (true)
 		{
-			if (FindPath())
+			bool bResult = FindPath();
+			if (bResult)
 			{
-				Util.DrawNodeLines(finalPaths.ToList(), Color.magenta, waitSec * 2);
+				Util.DrawNodeLines(finalNodes.ToList(), Color.magenta, waitSec * 2);
 			}
 			yield return waitSecond;
 		}
@@ -77,22 +77,22 @@ public class Aooni : Oni, IOnMoveMapHandler
 
 	private void FixedUpdate()
 	{
-		AStarNode tempPathNode = pathNode;
-		if (pathNode == null || pathNode.Position == transform.position)
+		AStarNode tempNode = curNode;
+		if (curNode == null || curNode.Position == transform.position)
 		{
-			pathNode = null;
-			finalPaths.TryPop(out pathNode);
+			curNode = null;
+			finalNodes.TryPop(out curNode);
 		}
 
-		if(pathNode != tempPathNode)
+		if(curNode != tempNode)
 		{
-			animator.SetBool("Walking", pathNode != null);
+			animator.SetBool("Walking", curNode != null);
 		}
 
 		var prevPosition = transform.position;
-		if (pathNode != null)
+		if (curNode != null)
 		{
-			transform.position = Vector2.MoveTowards(transform.position, pathNode.Position, Time.fixedDeltaTime * speed);
+			transform.position = Vector2.MoveTowards(transform.position, curNode.Position, Time.fixedDeltaTime * speed);
 		}
 
 		Vector2 dir = transform.position - prevPosition;
@@ -107,9 +107,11 @@ public class Aooni : Oni, IOnMoveMapHandler
 
 	void ClearNodeDatas()
 	{
-		openList.Clear();
-		closeList.Clear();
-		finalPaths.Clear();
+		openNodes.Clear();
+		closeNodes.Clear();
+		finalNodes.Clear();
+		targetNode = null;
+		curNode = null;
 	}
 
 	static readonly int[][] pathFindDirs = new int[][]
@@ -126,44 +128,46 @@ public class Aooni : Oni, IOnMoveMapHandler
 	};
 	bool FindPath()
 	{
-		ClearNodeDatas();
-
 		if (CanFindPath() == false)
 			return false;
 
-		var tempStartNode = Data.GetNodeByWorldPos(transform.position);
-		if (tempStartNode == null)
+		var startNode = curNode != null ? curNode : Data.GetNodeByWorldPos(transform.position);
+		if (startNode == null)
 			return false;
 
 		var tempTargetNode = Data.GetNodeByWorldPos(target.transform.position);
 		if (tempTargetNode == null)
 			return false;
 
-		startNode = pathNode != null ? pathNode : new AStarNode(tempStartNode);
-		targetNode = new AStarNode(tempTargetNode);
-
-		if (Vector3.Distance(targetNode.Position, startNode.Position) == 0.0f)
+		//Check target node changed
+		if (tempTargetNode == targetNode)
 			return false;
 
-		openList.Add(startNode);
+		targetNode = tempTargetNode;
 
-		while (openList.Count > 0)
+		if (startNode == targetNode)
+			return false;
+
+		openNodes.Clear();
+		closeNodes.Clear();
+		finalNodes.Clear();
+
+		openNodes.Enqueue(startNode, startNode.F);
+
+		while (openNodes.Count > 0)
 		{
-			openList.Sort();
-			curNode = openList[0];
-			openList.RemoveAt(0);
-			closeList.Add(curNode);
+			curNode = openNodes.Dequeue();
+			closeNodes.Add(curNode);
 
 			if (curNode == targetNode)
 			{
-				//finalPaths.Push(new AStarNode(target.transform.position));
-				//curNode = curNode.Parent;
 				while (curNode != startNode)
 				{
-					finalPaths.Push(curNode);
+					finalNodes.Push(curNode);
 					curNode = curNode.Parent;
 				}
-				finalPaths.Push(curNode);
+				finalNodes.Push(curNode);
+				curNode = null;
 				return true;
 			}
 
@@ -181,27 +185,22 @@ public class Aooni : Oni, IOnMoveMapHandler
 		var node = Data.GetNodeByIndex(index);
 		if (node == null)
 			return;
-		Stopwatch watch = new Stopwatch();
-		watch.Start();
-		if (closeList.Contains(node))
+		bool bConatins = closeNodes.Contains(node);
+		if (bConatins)
 			return;
-		watch.Stop();
-		UnityEngine.Debug.LogFormat("{0}", watch.ElapsedMilliseconds);
 
 		int cost = curNode.G + (curNode.X - index.x == 0 || curNode.Y - index.y == 0 ? 10 : 14);
-
 		bool bRefreshNode = true;
 		AStarNode adjacencyNode = null;
-		var openNode = openList.Find((astarNode) => { return node == astarNode; });
-		if (openNode != null)
+		if (openNodes.Contains(node))
 		{
-			adjacencyNode = openNode;
+			adjacencyNode = node;
 			bRefreshNode = cost < adjacencyNode.G;
 		}
 		else
 		{
-			adjacencyNode = new AStarNode(node);
-			openList.Add(adjacencyNode);
+			adjacencyNode = node;
+			openNodes.Enqueue(adjacencyNode, adjacencyNode.F);
 		}
 
 		if (bRefreshNode)
@@ -209,6 +208,7 @@ public class Aooni : Oni, IOnMoveMapHandler
 			adjacencyNode.G = cost;
 			adjacencyNode.H = (Mathf.Abs(adjacencyNode.X - targetNode.X) + Mathf.Abs(adjacencyNode.Y - targetNode.Y));
 			adjacencyNode.Parent = curNode;
+			openNodes.UpdatePriority(adjacencyNode, adjacencyNode.F);
 		}
 	}
 
@@ -252,7 +252,6 @@ public class Aooni : Oni, IOnMoveMapHandler
 				}
  				else if (originTarget != null)
 				{
- 					pathNode = null;
 					SetTarget(originTarget);
 					StartChase();
 					originTarget = null;

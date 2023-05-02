@@ -5,6 +5,7 @@ MonoImporter:
   serializedVersion: 2
   defaultReferences:
   - spawnData: {fileID: 11400000, guid: 5fffc9ecb53cbce4290976b8f81f926a, type: 2}
+  - generalData: {fileID: 11400000, guid: e5cfd76b5e032ec43af6db6fce5c6fef, type: 2}
   executionOrder: -50
   icon: {instanceID: 0}
   userData: 

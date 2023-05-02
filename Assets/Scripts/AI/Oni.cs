@@ -26,7 +26,6 @@ public class Oni : Character
 			GameManager.Instance.OnGameOver();
 		}
 	}
-
 	public bool IsChasingTarget()
 	{
 		return target != null;

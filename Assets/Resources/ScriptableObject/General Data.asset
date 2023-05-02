@@ -9,9 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 353eb575e91d51e42959d5d24b76f5f2, type: 3}
-  m_Name: Spawn Data
+  m_Script: {fileID: 11500000, guid: 6cb2f344967a29745b147a017fec480a, type: 3}
+  m_Name: General Data
   m_EditorClassIdentifier: 
-  OniPrefabs:
-  - {fileID: 7560918870598861048, guid: a3390d80d1e3b9345a543e035d0d346a, type: 3}
-  playerPrefab: {fileID: 3049658235702455217, guid: 6f9287f37c37d764aadcb76082d096e8, type: 3}
+  BGMClip: {fileID: 8300000, guid: 6174cfd9d08a40a4b90f4c5944d5e7a3, type: 3}

@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class BaseBehaviour : MonoBehaviour
 {
-
 	protected virtual void Awake()
 	{
 		if(this as IGameEventSystemHandler != null)

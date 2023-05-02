@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 using static UnityEngine.EventSystems.ExecuteEvents;
 
+[RequireComponent(typeof(AISystem))]
 public class GameManager : MonoBehaviour
 {
 	static GameManager instance = null;
@@ -30,18 +32,31 @@ public class GameManager : MonoBehaviour
 	[ReadOnly]
 	SpawnData spawnData = null;
 
+	[SerializeField]
+	[ReadOnly]
+	GeneralData generalData = null;
+
 	Player playerInstance = null;
 
 	HashSet<GameObject> gameEventListeners = new HashSet<GameObject>();
-	HashSet<GameObject> spawnedObjects = new HashSet<GameObject>();
+	HashSet<BaseObject> spawnedObjects = new HashSet<BaseObject>();
 
 	GameObject canvas = null;
+
+	AudioSource BGMSource = null;
 
 	void InitManager()
 	{
 		Assert.IsNotNull(spawnData);
 
+		AddListener(gameObject);
+
 		spawnData.InitSpawnableMap();
+
+		BGMSource = Camera.main.gameObject.GetComponent<AudioSource>();
+		BGMSource.clip = generalData.BGMClip;
+		BGMSource.volume = 0.0f;
+
 		Application.targetFrameRate = 60;
 	}
 
@@ -60,6 +75,7 @@ public class GameManager : MonoBehaviour
 
 	public void OnGameOver()
 	{
+		ExecuteGameEvent<IOnGameOverHandler>(null, (x, y) => x.OnGameOver());
 		DestroyAllSpawnedObject();
 		ResetData();
 		canvas?.SetActive(true);
@@ -98,8 +114,9 @@ public class GameManager : MonoBehaviour
 	{
 		foreach(var spawnedObject in spawnedObjects)
 		{
-			gameEventListeners.Remove(spawnedObject);
-			Destroy(spawnedObject);
+			ExecuteGameEvent<IOnDestroyObjectHandler>(null, (x, y) => x.OnDestroyObject(spawnedObject));
+			gameEventListeners.Remove(spawnedObject.gameObject);
+			Destroy(spawnedObject.gameObject);
 		}
 	}
 
@@ -107,6 +124,12 @@ public class GameManager : MonoBehaviour
 	{
 		SpawnOnis();
 		SpawnPlayer();
+
+		ExecuteGameEvent<IOnSpawnPlayerHandler>(null, (x, y) => x.OnSpawnPlayer(playerInstance));
+		foreach (var spawnedObject in spawnedObjects)
+		{
+			ExecuteGameEvent<IOnMoveMapHandler>(null, (x, y) => x.OnMoveMap(spawnedObject, null, null, spawnedObject.CurrentMap));
+		}
 	}
 
 	void SpawnPlayer()
@@ -117,9 +140,7 @@ public class GameManager : MonoBehaviour
 		{
 			this.playerInstance = playerInstance;
 			playerInstance.OnSpawn(map);
-			spawnedObjects.Add(playerInstance.gameObject);
-			ExecuteGameEvent<IOnSpawnPlayerHandler>(null, (x, y) => x.OnSpawnPlayer(playerInstance));
-			ExecuteGameEvent<IOnMoveMapHandler>(null, (x, y) => x.OnMoveMap(playerInstance, null, null, map));
+			spawnedObjects.Add(playerInstance);
 		}
 	}
 
@@ -132,8 +153,7 @@ public class GameManager : MonoBehaviour
 			if (oniInstance != null)
 			{
 				oniInstance.OnSpawn(randomMap);
-				spawnedObjects.Add(oniInstance.gameObject);
-				ExecuteGameEvent<IOnMoveMapHandler>(null, (x, y) => x.OnMoveMap(oniInstance, null, null, randomMap));
+				spawnedObjects.Add(oniInstance);
 			}
 		}
 	}
@@ -141,6 +161,18 @@ public class GameManager : MonoBehaviour
 	public GameObject GetPlayer()
 	{
 		return playerInstance != null ? playerInstance.gameObject : null;
+	}
+
+	const float minDistance = 5, maxDistance = 15;
+	public void SetBGMVolumeByOniDistance(float distance)
+	{
+		if(BGMSource != null)
+		{
+			distance = Mathf.Clamp(distance, minDistance, maxDistance);
+			float percent = (distance - minDistance) / (maxDistance - minDistance);
+			percent = 1 - percent;
+			BGMSource.volume = percent;
+		}
 	}
 
 }

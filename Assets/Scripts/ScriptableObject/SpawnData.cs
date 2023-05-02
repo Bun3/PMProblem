@@ -25,4 +25,12 @@ public class SpawnData : ScriptableObject
 		return SpawnableMap[Random.Range(0, SpawnableMap.Length)];
 	}
 
+	public Map GetMap(int idx)
+	{
+		if(SpawnableMap == null || idx < 0 || idx >= SpawnableMap.Length)
+			return null;
+
+		return SpawnableMap[idx];
+	}
+
 }

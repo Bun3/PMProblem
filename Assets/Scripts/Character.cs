@@ -38,7 +38,7 @@ public abstract class Character : BaseObject
 	public void OnSpawn(Map spawnedMap)
 	{
 		currentMap = spawnedMap;
-		GameManager.Instance.ExecuteGameEvent<IOnSpawnCharacterHandler>(null, (x, y) => x.OnSpawn(this));
+		GameManager.Instance.ExecuteGameEvent<IOnSpawnObjectHandler>(null, (x, y) => x.OnSpawnObject(this));
 	}
 
 }
