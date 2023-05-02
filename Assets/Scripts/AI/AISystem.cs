@@ -27,7 +27,6 @@ public class AISystem : MonoBehaviour, IOnSpawnObjectHandler, IOnDestroyObjectHa
 
 	private void LateUpdate()
 	{
-		//Oni nearestOni = null;
 		float nearestOniDist = float.MaxValue;
 		foreach (var oni in onis)
 		{
@@ -37,7 +36,6 @@ public class AISystem : MonoBehaviour, IOnSpawnObjectHandler, IOnDestroyObjectHa
 				nearestOniDist = oniDist;
 			}
 		}
-
 		GameManager.Instance.SetBGMVolumeByOniDistance(nearestOniDist);
 	}
 

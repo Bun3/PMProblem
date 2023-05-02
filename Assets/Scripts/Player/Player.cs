@@ -9,4 +9,18 @@ public class Player : Character
 		base.Awake();
 	}
 
+	protected override bool IsUseMovementAnimation()
+	{
+		return false;
+	}
+
+	protected override Vector2 GetMoveDirection()
+	{
+		return Vector2.zero;
+	}
+
+	protected override bool IsWalking()
+	{
+		return false;
+	}
 }

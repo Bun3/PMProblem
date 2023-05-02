@@ -13,12 +13,24 @@ public class GhostOni : Oni, IOnSpawnPlayerHandler
 		SetTarget(player);
 	}
 
-	// Update is called once per frame
-	void Update()
+	protected override bool IsUseMovementAnimation()
 	{
-		if(Target != null)
-		{
-			transform.position = Vector2.MoveTowards(transform.position, Target.transform.position, Time.deltaTime * speed);
-		}
+		return false;
 	}
+
+	protected override Vector2 GetMoveDirection()
+	{
+		throw new System.NotImplementedException();
+	}
+
+	protected override bool IsWalking()
+	{
+		throw new System.NotImplementedException();
+	}
+
+	protected override void PerformChaseTarget(float performDeltaTime)
+	{
+		transform.position = Vector2.MoveTowards(transform.position, Target.transform.position, performDeltaTime * speed);
+	}
+
 }

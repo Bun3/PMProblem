@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
-public class Oni : Character
+public abstract class Oni : Character
 {
 	protected BaseObject target = null;
 
@@ -12,11 +12,28 @@ public class Oni : Character
 	[SerializeField]
 	protected float speed = 1.0f;
 
+	bool bEnableChaseTarget = false;
+
 	protected override void Awake()
 	{
 		base.Awake();
 
 		collider2D.isTrigger = true;
+	}
+
+	protected override void OnEnable()
+	{
+		base.OnEnable();
+		if (HasTarget())
+		{
+			EnableChaseTarget();
+		}
+	}
+
+	protected override void OnDisable()
+	{
+		base.OnDisable();
+		DisableChaseTarget();
 	}
 
 	private void OnTriggerEnter2D(Collider2D collision)
@@ -26,7 +43,31 @@ public class Oni : Character
 			GameManager.Instance.OnGameOver();
 		}
 	}
-	public bool IsChasingTarget()
+
+	private void FixedUpdate()
+	{
+		if(IsEnableChaseTarget() && CanFindTarget())
+		{
+			PerformChaseTarget(Time.fixedDeltaTime);
+		}
+	}
+
+	public void EnableChaseTarget()
+	{
+		bEnableChaseTarget = true;
+	}
+
+	public void DisableChaseTarget()
+	{
+		bEnableChaseTarget = false;
+	}
+
+	public bool IsEnableChaseTarget()
+	{
+		return bEnableChaseTarget;
+	}
+
+	public bool HasTarget()
 	{
 		return target != null;
 	}
@@ -38,4 +79,19 @@ public class Oni : Character
 
 		this.target = target;
 	}
+
+	protected bool CanFindTarget()
+	{
+		if (currentMap == null)
+			return false;
+		if (HasTarget() == false)
+			return false;
+		if (currentMap != target.CurrentMap)
+			return false;
+
+		return true;
+	}
+
+	protected abstract void PerformChaseTarget(float performDeltaTime);
+
 }

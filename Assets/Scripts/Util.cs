@@ -18,10 +18,17 @@ public static class Util
 		Debug.DrawLine(rightTop, leftTop, color, duration);
 	}
 
-	public static void DrawNodeLines(List<AStarNode> nodeList, Color color, float duration = 1.0f)
+	public static void DrawNodeLines(IEnumerable<Node> nodeEnumerator, Color color, float duration = 1.0f)
 	{
-		for (int i = 0; i < nodeList.Count - 1; i++)
-			Debug.DrawLine(nodeList[i], nodeList[i + 1], color, duration);
+		Node prev = null;
+		foreach (var node in nodeEnumerator)
+		{
+			if(prev != null)
+			{
+				Debug.DrawLine(prev, node, color, duration);
+			}
+			prev = node;
+		}
 	}
 
 }

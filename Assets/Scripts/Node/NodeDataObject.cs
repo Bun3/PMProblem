@@ -1,13 +1,44 @@
+using Nito.Collections;
 using Priority_Queue;
 using System;
+using System.CodeDom;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Tilemaps;
 
+public abstract class NodeAdditionalData
+{
+	public abstract void ClearData();
+};
+
+//public interface INodeAdditionalData<T> where T : notnull, NodeAdditionalData
+//{
+//	public void ClearData();
+//	public int CompareTo(T other);
+//}
+
+public sealed class AstarData : NodeAdditionalData
+{
+	public override void ClearData()
+	{
+		G = 0;
+		H = 0;
+		Parent = null;
+	}
+
+	//G: 시작부터 현재 노드까지 거리, H: 현재 노드부터 타겟까지의 거리(장애물 무시)
+	public int G = 0, H = 0;
+	public Node Parent = null;
+
+	//F: G + H
+	public int F { get => G + H; }
+
+}
+
 [System.Serializable]
-public abstract class Node : FastPriorityQueueNode
+public class Node : FastPriorityQueueNode
 {
 	public Node(Vector3 position, Vector2Int index, bool bIsBlock = false)
 	{
@@ -24,6 +55,31 @@ public abstract class Node : FastPriorityQueueNode
 	public bool bIsBlock = false;
 	public Map OwnerMap = null;
 	public Portal OverlappedPortal = null;
+
+	List<NodeAdditionalData> nodeAdditionalDatas = new List<NodeAdditionalData>();
+
+	public void ClearData()
+	{
+		foreach (var data in nodeAdditionalDatas)
+		{
+			data.ClearData();
+		}
+	}
+
+	public T GetData<T>() where T : NodeAdditionalData, new()
+	{
+		foreach (var data in nodeAdditionalDatas)
+		{
+			if(data is T parsedData)
+			{
+				return parsedData;
+			}
+		}
+
+		var newData = new T();
+		nodeAdditionalDatas.Add(newData);
+		return newData;
+	}
 
 	public static implicit operator Vector2(Node node) => node.Position;
 	public static implicit operator Vector3(Node node) => node.Position;
@@ -59,7 +115,7 @@ public abstract class Node : FastPriorityQueueNode
 }
 
 [System.Serializable]
-public class AStarNode : Node, IComparable<AStarNode>
+public class AStarNode : Node
 {
 	public AStarNode(Vector3 position, Vector2Int index, bool bIsBlock = false) : base(position, index, bIsBlock)
 	{
@@ -69,11 +125,6 @@ public class AStarNode : Node, IComparable<AStarNode>
 	{
 		G = 0;
 		H = 0;
-	}
-
-	public int CompareTo(AStarNode other)
-	{
-		return F.CompareTo(other.F);
 	}
 
 	//G: 시작부터 현재 노드까지 거리, H: 현재 노드부터 타겟까지의 거리(장애물 무시)
@@ -123,21 +174,21 @@ public class NodeDataObject
 		return true;
 	}
 
-	public AStarNode GetNodeByWorldPos(Vector2 worldPos)
+	public Node GetNodeByWorldPos(Vector2 worldPos)
 	{
 		var cellPos = ownerMap.GroundTilemap.WorldToCell(worldPos);
 		if(nodeDictionary.TryGetValue(cellPos, out var node))
 		{
-			return node as AStarNode;
+			return node;
 		}
 		return null;
 	}
 
-	public AStarNode GetNodeByIndex(Vector2Int index)
+	public Node GetNodeByIndex(Vector2Int index)
 	{
 		if (IsValidNode(index))
 		{
-			return nodes[index.y, index.x] as AStarNode;
+			return nodes[index.y, index.x];
 		}
 		return null;
 	}
@@ -169,7 +220,7 @@ public class NodeDataObject
 			{
 				var cellPos = new Vector3Int(x, y, 0);
 				var nodePos = groundTilemap.GetCellCenterWorld(cellPos);
-				var node = nodes[i, j] = new AStarNode(nodePos, new Vector2Int(j, i));
+				var node = nodes[i, j] = new Node(nodePos, new Vector2Int(j, i));
 				node.OwnerMap = map;
 				nodeDictionary.Add(cellPos, node);
 
