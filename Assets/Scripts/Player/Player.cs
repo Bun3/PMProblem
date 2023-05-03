@@ -9,6 +9,12 @@ public class Player : Character
 		base.Awake();
 	}
 
+	protected override void LateUpdate()
+	{
+		base.LateUpdate();
+		Util.DrawDebugBox2D(currentMap.NodeDataObject.GetNodeByWorldPos(transform.position).Position, Vector2.one, Color.blue, Time.fixedDeltaTime);
+	}
+
 	protected override bool IsUseMovementAnimation()
 	{
 		return false;

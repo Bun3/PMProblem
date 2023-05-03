@@ -17,7 +17,7 @@ TagManager:
   - UI
   - Wall
   - Portal
-  - 
+  - Oni
   - 
   - 
   - 
@@ -45,12 +45,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Oni
-    uniqueID: 4179629779
-    locked: 0
   - name: Player
     uniqueID: 2932082117
     locked: 0
+  - name: Oni
+    uniqueID: 4179629779
+    locked: 0
   - name: UI
-    uniqueID: 416096697
+    uniqueID: 2786368011
     locked: 0

@@ -6,20 +6,16 @@ using UnityEngine.XR;
 
 public abstract class NodeBasedMoveOni : Oni
 {
-	protected static readonly int[][] nodeDirs = new int[][]
+	protected static readonly Vector2Int[] nodeDirs = new Vector2Int[]
 	{
-		new int[2] { 1, 0 },
-		new int[2] { -1, 0 },
-		new int[2] { 0, 1 },
-		new int[2] { 0, -1 },
+		new Vector2Int(1, 0),
+		new Vector2Int(-1, 0),
+		new Vector2Int(0, 1),
+		new Vector2Int(0, -1),
 		//대각선
-		//new int[2] { 1, 1 },
-		//new int[2] { 1, -1 },
-		//new int[2] { -1, 1 },
-		//new int[2] { -1, -1 },
 	};
 
-	protected Deque<Node> targetNodes = new Deque<Node>(1000);
+	protected LinkedList<Node> targetNodes = new LinkedList<Node>();
 	protected Node currentNode = null;
 
 	protected NodeDataObject NodeData
@@ -38,10 +34,8 @@ public abstract class NodeBasedMoveOni : Oni
 
 	protected override void PerformChaseTarget(float performDeltaTime)
 	{
-		if (MoveToTargets() || ShouldUpdateTargetNodes())
-		{
-			UpdateTargetNodes();
-		}
+		MoveToTargets();
+		UpdateTargetNodes();
 	}
 
 	protected Node GetMyNode()
@@ -57,18 +51,15 @@ public abstract class NodeBasedMoveOni : Oni
 		return null;
 	}
 
-	bool MoveToTargets()
+	void MoveToTargets()
 	{
 		if (currentNode == null || currentNode.Position == transform.position)
 		{
 			currentNode = null;
-			if(targetNodes.Count == 0)
+			if(targetNodes.Count > 0)
 			{
-				return true;
-			}
-			else
-			{
-				currentNode = targetNodes.RemoveFromBack();
+				currentNode = targetNodes.Last.Value;
+				targetNodes.RemoveLast();
 			}
 		}
 
@@ -76,13 +67,24 @@ public abstract class NodeBasedMoveOni : Oni
 		{
 			transform.position = Vector2.MoveTowards(transform.position, currentNode.Position, Time.fixedDeltaTime * speed);
 		}
-
-		return false;
 	}
 
-	//타겟을 새로 업데이트 해야만 하는 조건 정의
-	protected abstract bool ShouldUpdateTargetNodes();
+	protected override bool IsWalking()
+	{
+		return currentNode != null;
+	}
+
+	protected override Vector2 GetMoveDirection()
+	{
+		return transform.position - prevPosition;
+	}
 
 	protected abstract void UpdateTargetNodes();
+
+	protected virtual void ClearNodeDatas()
+	{
+		targetNodes.Clear();
+		currentNode = null;
+	}
 
 }

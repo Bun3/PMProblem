@@ -33,4 +33,9 @@ public class GhostOni : Oni, IOnSpawnPlayerHandler
 		transform.position = Vector2.MoveTowards(transform.position, Target.transform.position, performDeltaTime * speed);
 	}
 
+	public override bool IsEnableChaseTarget()
+	{
+		return target != null;
+	}
+
 }

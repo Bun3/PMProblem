@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(Collider2D))]
 public abstract class Oni : Character
 {
@@ -12,8 +13,6 @@ public abstract class Oni : Character
 	[SerializeField]
 	protected float speed = 1.0f;
 
-	bool bEnableChaseTarget = false;
-
 	protected override void Awake()
 	{
 		base.Awake();
@@ -21,24 +20,9 @@ public abstract class Oni : Character
 		collider2D.isTrigger = true;
 	}
 
-	protected override void OnEnable()
-	{
-		base.OnEnable();
-		if (HasTarget())
-		{
-			EnableChaseTarget();
-		}
-	}
-
-	protected override void OnDisable()
-	{
-		base.OnDisable();
-		DisableChaseTarget();
-	}
-
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		if(target is Player && target.gameObject == collision.gameObject)
+		if(collision.CompareTag("Player"))
 		{
 			GameManager.Instance.OnGameOver();
 		}
@@ -46,27 +30,13 @@ public abstract class Oni : Character
 
 	private void FixedUpdate()
 	{
-		if(IsEnableChaseTarget() && CanFindTarget())
+		if(IsEnableChaseTarget())
 		{
 			PerformChaseTarget(Time.fixedDeltaTime);
 		}
 	}
 
-	public void EnableChaseTarget()
-	{
-		bEnableChaseTarget = true;
-	}
-
-	public void DisableChaseTarget()
-	{
-		bEnableChaseTarget = false;
-	}
-
-	public bool IsEnableChaseTarget()
-	{
-		return bEnableChaseTarget;
-	}
-
+	public abstract bool IsEnableChaseTarget();
 	public bool HasTarget()
 	{
 		return target != null;
@@ -78,18 +48,6 @@ public abstract class Oni : Character
 			return;
 
 		this.target = target;
-	}
-
-	protected bool CanFindTarget()
-	{
-		if (currentMap == null)
-			return false;
-		if (HasTarget() == false)
-			return false;
-		if (currentMap != target.CurrentMap)
-			return false;
-
-		return true;
 	}
 
 	protected abstract void PerformChaseTarget(float performDeltaTime);

@@ -1,42 +1,62 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class CrazyOni : NodeBasedMoveOni
+public class CrazyOni : NodeBasedMoveOni, IOnMoveMapHandler
 {
-	protected override bool IsUseMovementAnimation()
-	{
-		return false;
-	}
-
-	protected override Vector2 GetMoveDirection()
-	{
-		throw new System.NotImplementedException();
-	}
-
-	protected override bool IsWalking()
-	{
-		throw new System.NotImplementedException();
-	}
 
 	protected override void UpdateTargetNodes()
 	{
-		throw new System.NotImplementedException();
+		if (currentNode != null && currentNode.Position != transform.position)
+			return;
+
+		targetNodes.Clear();
+
+		var startNode = GetMyNode();
+		var targetNode = GetTargetNode();
+
+		if (startNode == null || targetNode == null)
+			return;
+
+		targetNodes.AddLast(targetNode);
+		currentNode = startNode;
 	}
 
 	protected override Node GetTargetNode()
 	{
-		//To Do
-		return null;
+		var node = GetMyNode();
+		var randomDir = nodeDirs[Random.Range(0, nodeDirs.Length)];
+
+		while (true)
+		{
+			var tempNode = NodeData.GetNodeByIndex(node.Index + randomDir);
+			if (IsInvalidNode(tempNode))
+				break;
+
+			node = tempNode;
+			if (node.OverlappedPortal != null)
+				break;
+		}
+
+		return node;
 	}
 
-	bool IsTargetNode(Node node)
+	bool IsInvalidNode(Node node)
 	{
-		return node == null || node.bIsBlock || node.OverlappedPortal != null;
+		return node == null || node.bIsBlock;
 	}
 
-	protected override bool ShouldUpdateTargetNodes()
+	public override bool IsEnableChaseTarget()
 	{
-		return false;
+		return true;
+	}
+
+	public void OnMoveMap(BaseObject moveObject, Portal movedPortal, Map prevMap, Map currentMap)
+	{
+		if(moveObject == this)
+		{
+			ClearNodeDatas();
+		}
 	}
 }

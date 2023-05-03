@@ -25,7 +25,7 @@ public static class Util
 		{
 			if(prev != null)
 			{
-				Debug.DrawLine(prev, node, color, duration);
+				Debug.DrawLine(prev.Position, node.Position, color, duration);
 			}
 			prev = node;
 		}

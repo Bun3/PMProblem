@@ -81,8 +81,6 @@ public class Node : FastPriorityQueueNode
 		return newData;
 	}
 
-	public static implicit operator Vector2(Node node) => node.Position;
-	public static implicit operator Vector3(Node node) => node.Position;
 	public static bool operator==(Node lhs, Node rhs)
 	{
 		return Equals(lhs, rhs);
@@ -152,6 +150,8 @@ public class NodeDataObject
 	public Vector3 BoundMinWorldPos { get => boundMinWorldPos; }
 	Vector3 boundMaxWorldPos = Vector3.zero;
 	public Vector3 BoundMaxWorldPos { get => boundMaxWorldPos; }
+	public int NodesXSize { get => nodesXSize; set => nodesXSize = value; }
+	public int NodesYSize { get => nodesYSize; set => nodesYSize = value; }
 
 	public bool IsValidIndex(Vector2Int index) => IsValidIndex(index.x, index.y);
 	public bool IsValidIndex(int x, int y)
@@ -264,7 +264,7 @@ public class NodeDataObject
 		Assert.IsTrue(randomPointNodeList.Count > 0);
 
 		int randomIndex = UnityEngine.Random.Range(0, randomPointNodeList.Count);
-		return randomPointNodeList[randomIndex];
+		return randomPointNodeList[randomIndex].Position;
 	}
 
 }

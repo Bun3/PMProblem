@@ -5,6 +5,7 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using Priority_Queue;
+using UnityEngine.XR;
 
 public class Aooni : NodeBasedMoveOni, IOnMoveMapHandler
 {
@@ -31,7 +32,7 @@ public class Aooni : NodeBasedMoveOni, IOnMoveMapHandler
 		if (HasTarget() == false && moveObject is Player && IsChaseable(moveObject))
 		{
 			SetTarget(moveObject);
-			EnableChaseTarget();
+			ClearNodeDatas();
 		}
 
 		if(HasTarget() && (target == moveObject || this == moveObject || originTarget == moveObject))
@@ -44,26 +45,31 @@ public class Aooni : NodeBasedMoveOni, IOnMoveMapHandler
 				{
 					originTarget = target as Player;
 					SetTarget(portal);
-					EnableChaseTarget();
+					ClearNodeDatas();
 				}
  				else if (originTarget != null)
 				{
 					SetTarget(originTarget);
-					EnableChaseTarget();
 					originTarget = null;
+					ClearNodeDatas();
 				}
 			}
 			else
 			{
 				SetTarget(null);
-				DisableChaseTarget();
+				ClearNodeDatas();
 			}
 		}
 	}
 
 	protected override void UpdateTargetNodes()
 	{
-		var startNode = currentNode != null ? currentNode : GetMyNode();
+		var startNode = NodeData.GetNodeByWorldPos(transform.position);
+		if(currentNode != null)
+		{
+			startNode = currentNode;
+		}
+
 		if (startNode == null)
 			return;
 
@@ -71,11 +77,18 @@ public class Aooni : NodeBasedMoveOni, IOnMoveMapHandler
 		if(targetNode == null) 
 			return;
 
+		if (targetNodes.Count > 0 && targetNodes.First.Value == targetNode)
+			return;
+
 		if (startNode == targetNode)
+			return;
+
+		if (startNode.bIsBlock || targetNode.bIsBlock)
 			return;
 
 		openNodes.Clear();
 		closeNodes.Clear();
+		targetNodes.Clear();
 
 		startNode.GetData<AstarData>().ClearData();
 
@@ -90,10 +103,10 @@ public class Aooni : NodeBasedMoveOni, IOnMoveMapHandler
 			{
 				while (currentNode != startNode)
 				{
-					targetNodes.AddToBack(currentNode);
+					targetNodes.AddLast(currentNode);
 					currentNode = currentNode.GetData<AstarData>().Parent;
 				}
-				targetNodes.AddToBack(currentNode);
+				targetNodes.AddLast(currentNode);
 				currentNode = null;
 				Util.DrawNodeLines(targetNodes, Color.magenta);
 				return;
@@ -101,7 +114,7 @@ public class Aooni : NodeBasedMoveOni, IOnMoveMapHandler
 
 			foreach (var dir in nodeDirs)
 			{
-				AddOpenList(new Vector2Int(currentNode.X + dir[0], currentNode.Y + dir[1]), ref targetNode.Index);
+				AddOpenList(currentNode.Index + dir, ref targetNode.Index);
 			}
 		}
 	}
@@ -142,21 +155,28 @@ public class Aooni : NodeBasedMoveOni, IOnMoveMapHandler
 		}
 	}
 
-	protected override bool IsWalking()
+	protected override void ClearNodeDatas()
 	{
-		return currentNode != null;
+		openNodes.Clear();
+		closeNodes.Clear();
+		base.ClearNodeDatas();
 	}
 
-	protected override Vector2 GetMoveDirection()
+	public override bool IsEnableChaseTarget()
 	{
-		return transform.position - prevPosition;
+		return CanFindTarget();
 	}
 
-	protected override bool ShouldUpdateTargetNodes()
+	bool CanFindTarget()
 	{
-		if (targetNodes.Count > 0 && targetNodes[targetNodes.Count - 1] == GetTargetNode())
+		if (currentMap == null)
+			return false;
+		if (HasTarget() == false)
+			return false;
+		if (currentMap != target.CurrentMap)
 			return false;
 
 		return true;
 	}
+
 }

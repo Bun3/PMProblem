@@ -21,7 +21,7 @@ public abstract class Character : BaseObject
 		animator = GetComponent<Animator>();
 	}
 
-	private void LateUpdate()
+	protected virtual void LateUpdate()
 	{
 		if(IsUseMovementAnimation() && animator != null)
 		{
@@ -39,24 +39,8 @@ public abstract class Character : BaseObject
 				animator.SetFloat("DirY", dir.y);
 			}
 		}
-	}
 
-	Coroutine setPrevDataCoroutine = null;
-	static readonly WaitForEndOfFrame waitForEndOfFrame = new WaitForEndOfFrame();
-	IEnumerator ISetPrevData()
-	{
-		yield return waitForEndOfFrame;
 		prevPosition = transform.position;
-	}
-
-	protected virtual void OnEnable()
-	{
-		setPrevDataCoroutine = StartCoroutine(ISetPrevData());
-	}
-
-	protected virtual void OnDisable()
-	{
-		StopCoroutine(setPrevDataCoroutine);
 	}
 
 	protected virtual bool IsUseMovementAnimation() { return true; }

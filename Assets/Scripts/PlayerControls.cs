@@ -65,7 +65,7 @@ namespace PMProblem
                 {
                     ""name"": ""down"",
                     ""id"": ""2a33f807-a83e-4dfd-95b1-2ff2c80cb036"",
-                    ""path"": ""<Keyboard>/a"",
+                    ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
